@@ -460,11 +460,7 @@ insights into market drivers, challenges, and future prospects, offering a conci
 India's EV evolution.
 
 **Done By**
-\n:one: Souvik Samanta 
-\n:two: Saurabh Subhash Tehare
-\n:three: Arfat Wakeel Khan
-\n:four: Prajwal Nikure
-\n:five: Busetty Vasavi
+\n:one: Saurabh Subhash Tehare
 \n Thanks :heartpulse:
 """)
     

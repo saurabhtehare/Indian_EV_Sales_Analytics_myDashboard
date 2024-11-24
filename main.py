@@ -119,8 +119,8 @@ cat.columns=['Car Category','Total Sales']
 chart1, chart2 = st.columns((2))
 
 with chart1:
-    st.subheader('Top 10 EV Manufacturers by Growth Rate')
-    fig = px.bar(top_manufacturers_growth, x = 'Growth Rate (%)', y = 'Maker', 
+    st.subheader('Top 10 EV Manufacturers by Growth')
+    fig = px.bar(top_manufacturers_growth, x = 'Growth', y = 'Maker', 
                  color_discrete_sequence=['#f4a24b'])
     fig.update_yaxes(autorange='reversed')
     st.plotly_chart(fig,use_container_width=True, height = 200)
@@ -344,8 +344,7 @@ def main():
         data = data[data['State'].isin(selected_state)]
 
     # Create a Folium map centered around India
-    india_map = folium.Map(location=[20.5937, 78.9629], zoom_start=5)
-
+    india_map = folium.Map(location=[23.0, 82.0], zoom_start=4)
     # Add data points to the map
     marker_cluster = MarkerCluster().add_to(india_map)
 

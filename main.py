@@ -414,5 +414,22 @@ with c23:
         width=None,
         key=None,
     )
+# Custom CSS to position the "Created by" message at the bottom right
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        color: #888;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
+# Add the "Created by" message
+st.markdown('<div class="footer">Created by Your Name</div>', unsafe_allow_html=True)
 # End 

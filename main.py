@@ -243,7 +243,7 @@ import streamlit as st
 import pandas as pd
 
 # Load India boundary with disputed boundaries
-boundary_file = "India_with_disputed_boundaries.geojson.geojson"
+boundary_file = "india_with_disputed_boundaries.geojson.geojson"
 gdf = gpd.read_file(boundary_file)
 
 # Simplify the geometries for efficiency
@@ -252,12 +252,6 @@ gdf["geometry"] = gdf.to_crs(gdf.estimate_utm_crs()).simplify(1000).to_crs(gdf.c
 # Convert to GeoJSON
 india_states = gdf.rename(columns={"NAME_1": "ST_NM"}).__geo_interface__
 
-# Assuming df3 is your dataset with state-level data for plotting
-# Example structure of df3:
-# df3 = pd.DataFrame({
-#     "State": ["Maharashtra", "Gujarat", "Karnataka"],
-#     "No. of Operational PCS": [100, 150, 120]
-# })
 
 # Create the map
 fig = px.choropleth(

@@ -342,24 +342,11 @@ def main():
         data = data[data['State'].isin(selected_state)]
 
     # Create a Folium map centered around India
-    india_map = folium.Map(location=[23.0, 82.0], zoom_start=4, tiles="CartoDB Positron")
+    india_map = folium.Map(location=[23.0, 82.0], zoom_start=4,  tiles="Stamen Terrain")
 
-    # Optional: Add custom boundaries (GeoJSON overlay)
-    geojson_file = 'india_with_disputed_boundaries.geojson'  # Replace with the correct file path
-    try:
-        folium.GeoJson(
-            geojson_file,
-            name="Disputed Boundaries",
-            style_function=lambda x: {
-                'fillColor': 'transparent',
-                'color': 'red',
-                'weight': 2
-            }
-        ).add_to(india_map)
-    except FileNotFoundError:
-        st.warning("GeoJSON file for India's boundaries not found. Proceeding without it.")
 
-    # Add data points to the map
+
+    # Added data points to the map
     marker_cluster = MarkerCluster().add_to(india_map)
 
     for _, row in data.iterrows():
@@ -370,7 +357,7 @@ def main():
             icon=folium.Icon(color='blue')
         ).add_to(marker_cluster)
 
-    # Render the map in the second column
+    # Rendered the map in the second column
     with col2:
         st_folium(india_map, width=700, height=500)
 

@@ -323,11 +323,13 @@ def main():
     # Filter valid latitude and longitude ranges
     data = data[(data['Latitude'].between(-90, 90)) & (data['Longitude'].between(-180, 180))]
 
+    
     # columns for filter options and map
     col1, col2 = st.columns([1, 2])  # Adjustment of proportions as needed
 
     with col1:
         # horizontal layout for the logo and header
+        # st.image(logo_path, width=30, caption='')  # Display the logo
         st.markdown("<h3 style='margin: 0;'>Filter Options</h3>", unsafe_allow_html=True)
         selected_maker = st.multiselect("Select EV Maker", options=data['EV Maker'].unique())
         selected_place = st.multiselect("Select Place", options=data['Place'].unique())
@@ -342,11 +344,9 @@ def main():
         data = data[data['State'].isin(selected_state)]
 
     # Create a Folium map centered around India
-    india_map = folium.Map(location=[23.0, 82.0], zoom_start=4,  tiles="Stamen Terrain")
+    india_map = folium.Map(location=[20.5937, 78.9629], zoom_start=5)
 
-
-
-    # Added data points to the map
+    # Add data points to the map
     marker_cluster = MarkerCluster().add_to(india_map)
 
     for _, row in data.iterrows():
@@ -357,12 +357,13 @@ def main():
             icon=folium.Icon(color='blue')
         ).add_to(marker_cluster)
 
-    # Rendered the map in the second column
+    # Render the map in the second column
     with col2:
         st_folium(india_map, width=700, height=500)
 
 if __name__ == "__main__":
     main()
+
 st.markdown("<br>", unsafe_allow_html=True)  # Adds a line break
 st.markdown("<br>", unsafe_allow_html=True)  # Adds a line break
 

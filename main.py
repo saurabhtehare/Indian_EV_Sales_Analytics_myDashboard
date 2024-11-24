@@ -110,7 +110,7 @@ st.markdown("<br>", unsafe_allow_html=True)  # Adds a line break
 
 # Some visualization         
 df['Growth Rate (%)'] = ((df['2024'] - df['2015']) / df['2015']).replace([float('inf'), -float('inf')], 0) * 100
-top_manufacturers_growth = df[['Maker', 'Growth Rate (%)']].sort_values(by='Growth Rate (%)', ascending=False).head(10)          
+top_manufacturers_growth = df[['Maker', 'Growth Rate (%)']].sort_values(by='Growth', ascending=False).head(10)          
 category_sales = df.groupby('Cat').sum()[['2015', '2016', '2017', '2018', '2019', '2020', '2021','2022', '2023', '2024']].reset_index()
 category_sales = df.groupby('Cat').sum().loc[:, '2015':'2024']
 category_sales_long = category_sales.reset_index().melt(id_vars='Cat', var_name='Year', value_name='Total Sales')

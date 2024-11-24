@@ -236,52 +236,65 @@ with st.expander("Download Hitmap Plot Data"):
         csv2 = df1.to_csv(index = False).encode('utf-8')
         st.download_button("Download Data", data=csv2, file_name="Category2.csv", mime="text/csv", key="unique_key_8")
 
-# get some geojson for India.  Reduce somplexity of geomtry to make it more efficient
-url = "https://raw.githubusercontent.com/Subhash9325/GeoJson-Data-of-Indian-States/master/Indian_States"
-gdf = gpd.read_file(url)
+# Operational PCS in India
+import geopandas as gpd
+import plotly.express as px
+import streamlit as st
+import pandas as pd
+
+# Load India boundary with disputed boundaries
+boundary_file = "India_with_disputed_boundaries.geojson.geojson"
+gdf = gpd.read_file(boundary_file)
+
+# Simplify the geometries for efficiency
 gdf["geometry"] = gdf.to_crs(gdf.estimate_utm_crs()).simplify(1000).to_crs(gdf.crs)
+
+# Convert to GeoJSON
 india_states = gdf.rename(columns={"NAME_1": "ST_NM"}).__geo_interface__
 
+# Assuming df3 is your dataset with state-level data for plotting
+# Example structure of df3:
+# df3 = pd.DataFrame({
+#     "State": ["Maharashtra", "Gujarat", "Karnataka"],
+#     "No. of Operational PCS": [100, 150, 120]
+# })
 
-# create base map of all India states
-fig_choropleth = px.choropleth(
-    pd.json_normalize(india_states["features"])["properties.ST_NM"],
-    locations="properties.ST_NM",
-    geojson=india_states,
-    featureidkey="properties.ST_NM",
-    color_discrete_sequence=["lightgrey"],
-)
-
-# Create the base map for all India states
+# Create the map
 fig = px.choropleth(
     df3,
-    locations='State', 
-    geojson=india_states,  
-    featureidkey="properties.ST_NM",  
-    color='No. of Operational PCS',  
-    color_continuous_scale="Viridis", 
-    hover_name="State",  
- #   title="No. of Operational PCS by State in India",
+    locations='State',  # State column in your data
+    geojson=india_states,  # Updated India boundaries
+    featureidkey="properties.ST_NM",  # Match on state name
+    color='No. of Operational PCS',  # Column for choropleth
+    color_continuous_scale="Viridis",  # Color scale
+    hover_name="State"  # Display state name on hover
 )
 
+# Customize the layout
 fig.update_layout(
     template="plotly_dark",
+    title="Operational PCS in India by State",
+    geo=dict(fitbounds="locations", visible=False)  # Fit map to data
 )
 
-fig.update_geos(fitbounds="locations", visible=False)
-st.markdown("<br>", unsafe_allow_html=True)  # Adds a line break
-st.markdown("<br>", unsafe_allow_html=True)  # Adds a line break
-
+# Display the map in Streamlit
 st.markdown("<h3 style='text-align: center;'>Operational PCS in India by State</h3>", unsafe_allow_html=True)
-st.plotly_chart(fig)  
+st.plotly_chart(fig)
 
+# Add a download option
 cl7, cl8 = st.columns((2))
 
 with cl7:
     with st.expander("Download Map Plot Data"):
         st.write(df3.style.background_gradient(cmap="Oranges"))
-        csv2 = minidf_OLA.to_csv(index = False).encode('utf-8')
-        st.download_button("Download Data", data=csv2, file_name="Category2.csv", mime="text/csv", key="unique_key_11")
+        csv2 = df3.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="Download Data",
+            data=csv2,
+            file_name="Operational_PCS_by_State.csv",
+            mime="text/csv"
+        )
+
 
 
 # ev_makers
